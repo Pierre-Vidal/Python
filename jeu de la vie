@@ -1,0 +1,133 @@
+import random
+import time
+import copy
+
+def affichage(M):
+    Mafi=copy.deepcopy(M)
+    for k in range(len(Mafi)):
+        for l in range(len(Mafi[0])):  
+            if Mafi[k][l]==0:
+                Mafi[k][l]="\u2B1C"
+            if Mafi[k][l]==1:
+                Mafi[k][l]="\u2B1B"
+    for i in range(len(Mafi)):
+        ligne=""
+        for j in range(len(Mafi[0])):
+            ligne=ligne+(Mafi[i][j])
+        print(ligne)
+
+def compteur(M):
+    for i in range(len(M)):
+        for j in range(len(M[0])):
+                compteur=0
+                if i!=0 and j!=0:
+                    if (M[i-1][j-1]==1 or M[i-1][j-1]==2) :
+                        compteur=compteur+1
+                if i!=0:
+                    if (M[i-1][j]==1 or M[i-1][j]==2)  :
+                        compteur=compteur+1
+                if i!=0 and j!=len(M[0])-1:
+                    if  (M[i-1][j+1]==1 or M[i-1][j+1]==2) :
+                        compteur=compteur+1
+                if j!=0:
+                     if (M[i][j-1]==1 or M[i][j-1]==2):
+                         compteur=compteur+1
+                if j!=len(M[0])-1:
+                    if (M[i][j+1]==1 or M[i][j+1]==2) :
+                        compteur=compteur+1
+                if i!=len(M)-1 and j!=0 :
+                    if (M[i+1][j-1]==1 or M[i+1][j-1]==2) :
+                        compteur=compteur+1
+                if i!=len(M)-1:
+                    if (M[i+1][j]==1 or M[i+1][j]==2) :
+                        compteur=compteur+1
+                if i!=len(M)-1 and j!=len(M[0])-1:
+                    if (M[i+1][j+1]==1 or M[i+1][j+1]==2) :
+                        compteur=compteur+1
+                
+                if M[i][j]==1:
+                    if compteur!=2 and compteur!=3:
+                        M[i][j]=2
+                if M[i][j]==0:
+                    if compteur==3:
+                        M[i][j]=3
+        
+       
+def generation(M):
+    for i in range(len(M)):
+        for j in range(len(M[0])):
+                compteur=0
+                if i!=0 and j!=0:
+                    if (M[i-1][j-1]==1 or M[i-1][j-1]==2) :
+                        compteur=compteur+1
+                if i!=0:
+                    if (M[i-1][j]==1 or M[i-1][j]==2)  :
+                        compteur=compteur+1
+                if i!=0 and j!=len(M[0])-1:
+                    if  (M[i-1][j+1]==1 or M[i-1][j+1]==2) :
+                        compteur=compteur+1
+                if j!=0:
+                     if (M[i][j-1]==1 or M[i][j-1]==2):
+                         compteur=compteur+1
+                if j!=len(M[0])-1:
+                    if (M[i][j+1]==1 or M[i][j+1]==2) :
+                        compteur=compteur+1
+                if i!=len(M)-1 and j!=0 :
+                    if (M[i+1][j-1]==1 or M[i+1][j-1]==2) :
+                        compteur=compteur+1
+                if i!=len(M)-1:
+                    if (M[i+1][j]==1 or M[i+1][j]==2) :
+                        compteur=compteur+1
+                if i!=len(M)-1 and j!=len(M[0])-1:
+                    if (M[i+1][j+1]==1 or M[i+1][j+1]==2) :
+                        compteur=compteur+1
+                
+                if M[i][j]==1:
+                    if compteur!=2 and compteur!=3:
+                        M[i][j]=2
+                if M[i][j]==0:
+                    if compteur==3:
+                        M[i][j]=3
+    
+    for i in range(len(M)):
+        for j in range(len(M[0])):  
+            if M[i][j]==2:
+                M[i][j]=0
+            if M[i][j]==3:
+                M[i][j]=1     
+    return M
+
+def jeudelavie(M,NBgeneration):
+    for i in range(NBgeneration+1):
+        last = copy.deepcopy(M);
+        print(i)
+        affichage(M)
+        M=generation(M)
+        if M==last:
+            print("le jeu est stabiliser a la "+ str(i) +" génération")
+            break
+        time.sleep(0.4)
+        
+def jeudelavieale(tailleM,NBblock,NBgeneration):
+    
+    if NBblock <= tailleM * tailleM:
+        M2 =[[0 for j in range(tailleM)]for i in range(tailleM)]
+        for i in range(NBblock):
+            x=random.randint(0, tailleM-1)
+            y=random.randint(0, tailleM-1)
+            while M2[x][y]==1:
+                x=random.randint(0, tailleM-1)
+                y=random.randint(0, tailleM-1)
+            M2[x][y]=1 
+        print(M2)
+        jeudelavie(M2,NBgeneration)
+        
+        
+print("JE DE LA VIE")
+print("indiquer la taille de la future Matrice carré")
+tailleM=int(input())
+print("indiquer le nombre de cellule vivante")
+NBblock=int(input())
+print("indiquer le nombre de génération")
+NBgeneration=int(input())
+jeudelavieale(tailleM,NBblock,NBgeneration)
